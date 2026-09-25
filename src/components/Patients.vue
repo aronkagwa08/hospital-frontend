@@ -6,7 +6,7 @@ const patients = [
     id: 1, 
     firstname: 'John',
     lastname: 'Doe',
-    age: 30, 
+    nationalId: 12349241,
     condition: 'Flu',
     address: '123 Main St, Cityville',
     email: 'john.doe@example.com',
@@ -18,7 +18,7 @@ const patients = [
     id: 2, 
     firstname: 'Jane',
     lastname: 'Smith',
-    age: 13, 
+    nationalId: 12454548, 
     condition: 'Cold',
     address: '456 Oak Ave, Townsville',
     email: 'jane.smith@example.com',
@@ -30,7 +30,7 @@ const patients = [
     id: 3, 
     firstname: 'Sam',
     lastname: 'Johnson',
-    age: 40, 
+    nationalId: 67345678, 
     condition: 'Diabetes',
     address: '789 Pine Rd, Villagetown',
     email: 'sam.johnson@example.com',
@@ -41,7 +41,7 @@ const patients = [
     id: 4,
     firstname: 'Alice',
     lastname: 'Williams',
-    age: 35,
+    nationalId: 92445638,
     condition: 'Hypertension',
     address: '101 Elm St, Hamletville',
     email: 'alice.williams@example.com',
@@ -52,6 +52,33 @@ const patients = [
 
 const showAddDialog = ref(false)
 
+//models
+const firstname= ref(null)
+const lastname = ref(null)
+const nationalId = ref(null)
+const condition = ref(null)
+const address = ref(null)
+const email = ref(null)
+const phone = ref(null)
+const dob = ref(null)
+
+function handleAddPatient(){
+    const data = {
+    id: 5,
+    firstname: firstname.value,
+    lastname: lastname.value,
+    nationalId: nationalId.value,
+    condition: condition.value,
+    address:address.value,
+    email: email.value,
+    phone: phone.value,
+    dob: dob.value,
+
+    }
+    patients.push(data)
+    showAddDialog.value = false
+    console.log(patients)
+}
 
 </script>
 
@@ -73,7 +100,7 @@ const showAddDialog = ref(false)
                     <tr>
                             <th>First Name</th>
                             <th>Last Name</th>
-                            <th>Age</th>
+                            <th>National ID</th>
                             <th>Condition</th>
                             <th>Address</th>
                             <th>Email</th>
@@ -86,7 +113,7 @@ const showAddDialog = ref(false)
                         <tr v-for="item in patients">
                             <td>{{ item.firstname}}</td>
                             <td>{{ item.lastname }}</td>
-                            <td>{{ item.age }}</td>
+                            <td>{{ item.nationalId }}</td>
                             <td>{{ item.condition }}</td>
                             <td>{{ item.address }}</td>
                             <td>{{ item.email }}</td>
@@ -119,34 +146,34 @@ const showAddDialog = ref(false)
                 <v-divider class="mb-4" color="primary" opacity="1.5" thickness="3" gradient> </v-divider>
                 <v-row>
                     <v-col md="6">
-                        <v-text-field label="First Name" variant="outlined" prepend-icon="mdi-account-outline">  </v-text-field>
+                        <v-text-field label="First Name" v-model="firstname" variant="outlined" prepend-icon="mdi-account-outline">  </v-text-field>
                     </v-col>
                     <v-col md="6">
-                        <v-text-field label="Last Name" variant="outlined" prepend-icon="mdi-account-outline">  </v-text-field>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col md="6">
-                        <v-number-input label="Age" variant="outlined" prepend-icon="mdi-baby-face-outline">  </v-number-input>
-                    </v-col>
-                    <v-col md="6">
-                        <v-text-field label="Condition" variant="outlined" prepend-icon="mdi-heart-broken-outline">  </v-text-field>
+                        <v-text-field label="Last Name" v-model="lastname" variant="outlined" prepend-icon="mdi-account-outline">  </v-text-field>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col md="6">
-                        <v-text-field label="Email" variant="outlined" prepend-icon="mdi-email-outline">  </v-text-field>
+                        <v-number-input label="ID number" v-model="nationalId" variant="outlined" prepend-icon="mdi-passport">  </v-number-input>
                     </v-col>
                     <v-col md="6">
-                        <v-text-field type="number" label="Phone Number" variant="outlined" prepend-icon="mdi-phone-outline">  </v-text-field>
+                        <v-text-field label="Condition" v-model="condition" variant="outlined" prepend-icon="mdi-heart-broken-outline">  </v-text-field>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col md="6">
-                        <v-text-field label="Address" variant="outlined" prepend-icon="mdi-map-marker-outline">  </v-text-field>
+                        <v-text-field label="Email" v-model="email" variant="outlined" prepend-icon="mdi-email-outline">  </v-text-field>
                     </v-col>
                     <v-col md="6">
-                        <v-date-input label="Date Of Birth" variant="outlined" prepend-icon="mdi-calendar-outline">  </v-date-input>
+                        <v-text-field type="number" v-model="phone" label="Phone Number" variant="outlined" prepend-icon="mdi-phone-outline">  </v-text-field>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col md="6">
+                        <v-text-field label="Address" v-model="address" variant="outlined" prepend-icon="mdi-map-marker-outline">  </v-text-field>
+                    </v-col>
+                    <v-col md="6">
+                        <v-date-input label="Date Of Birth" v-model="dob" variant="outlined" prepend-icon="mdi-calendar-outline">  </v-date-input>
                     </v-col>
                 </v-row>
                 <v-divider class="mb-4" color="primary" opacity="1.5" thickness="3" gradient> </v-divider>
@@ -157,7 +184,7 @@ const showAddDialog = ref(false)
                                 <v-icon icon="mdi-close"></v-icon>
                             Close</v-btn>
                             <v-spacer></v-spacer>
-                            <v-btn color="primary" variant="outlined">
+                            <v-btn color="primary" variant="outlined" @click="handleAddPatient">
                                 <v-icon icon="mdi-content-save-outline"></v-icon>
                             Save</v-btn>
                         </v-card-actions>
