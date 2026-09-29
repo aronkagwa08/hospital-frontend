@@ -1,84 +1,44 @@
 <script setup>
 import {ref} from 'vue'
+import { usePatientsStore } from '../stores/patients'
+import { useRouter } from 'vue-router'
 
-const patients = [
-    { 
-    id: 1, 
-    firstname: 'John',
-    lastname: 'Doe',
-    nationalId: 12349241,
-    condition: 'Flu',
-    address: '123 Main St, Cityville',
-    email: 'john.doe@example.com',
-    phone: '+254712345678',
-    dob: '1993-05-15'
+const router = useRouter();
+const patientsStore = usePatientsStore()
+const patients = patientsStore.patients
 
-    },
-    { 
-    id: 2, 
-    firstname: 'Jane',
-    lastname: 'Smith',
-    nationalId: 12454548, 
-    condition: 'Cold',
-    address: '456 Oak Ave, Townsville',
-    email: 'jane.smith@example.com',
-    phone: '+254712345679',
-    dob: '2013-05-15',
-    
-    },
-    { 
-    id: 3, 
-    firstname: 'Sam',
-    lastname: 'Johnson',
-    nationalId: 67345678, 
-    condition: 'Diabetes',
-    address: '789 Pine Rd, Villagetown',
-    email: 'sam.johnson@example.com',
-    phone: '+254712345680',
-    dob: '1983-09-20',
-    },
-    { 
-    id: 4,
-    firstname: 'Alice',
-    lastname: 'Williams',
-    nationalId: 92445638,
-    condition: 'Hypertension',
-    address: '101 Elm St, Hamletville',
-    email: 'alice.williams@example.com',
-    phone: '+254712345681',
-    dob: '1988-12-10',
-    }
-];
+const showAddDialog = ref(null)
 
-const showAddDialog = ref(false)
+const viewPatient = (patientId) => {
+    patientsStore.selectPatient(patientId)
 
-//models
-const firstname= ref(null)
-const lastname = ref(null)
-const nationalId = ref(null)
-const condition = ref(null)
-const address = ref(null)
-const email = ref(null)
-const phone = ref(null)
-const dob = ref(null)
+    router.push({ name: 'ViewPatient', params: {id:patientId}})
+}
+
+// models
+const firstName =ref(null)
+const lastName =ref(null)
+const email =ref(null)
+const phone =ref(null)
+const residence =ref(null)
+const nationalId =ref(null)
+const dob =ref(null)
 
 function handleAddPatient(){
-    const data = {
-    id: 5,
-    firstname: firstname.value,
-    lastname: lastname.value,
-    nationalId: nationalId.value,
-    condition: condition.value,
-    address:address.value,
-    email: email.value,
-    phone: phone.value,
-    dob: dob.value,
+    const data ={
+        firstName:firstName.value,
+        lastName:lastName.value,
+        email:email.value,
+        phone:phone.value,
+        residence:residence.value,
+        nationalId:nationalId.value,
+        dob:dob.value,
 
     }
-    patients.push(data)
-    showAddDialog.value = false
-    console.log(patients)
+    patientsStore.addPatient(data)
+    showAddDialog.value =false
 }
+
 
 </script>
 
@@ -120,7 +80,7 @@ function handleAddPatient(){
                             <td>{{ item.phone }}</td>
                             <td>{{ item.dob }}</td>
                             <td>
-                                <v-btn color="primary" size="small" to="/ViewPatients">
+                                <v-btn color="primary" size="small" @click="viewPatient(item.id)">
                                     <v-icon icon="mdi-eye"></v-icon>
                                  View
                                 </v-btn></td>

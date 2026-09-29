@@ -11,35 +11,38 @@ import ViewPatients from '@/components/ViewPatients.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: '/',
-      component: LandingPage
-    },
-    {
-      path: '/homepage',
-      component: HomePage
-    },
-    {
-      path: '/login',
-      component: Login
-    },
-    {
-      path: '/patients',
-      component: Patients
-    },
-    {
-      path: '/profile',
-      component: Profile
-    },
-    {
-      path: '/signup',
-      component: Signup
-    },
-    {
-      path: '/viewpatients',
-      component: ViewPatients
-    }
-  ],
+      {
+        path: '/',
+        component: LandingPage
+  
+      },
+      {
+        path: '/login',
+        component: Login
+      },
+      {
+        path: '/patients',
+        component: Patients
+      },
+      {
+        path: '/profile',
+        component:Profile
+      },
+      {
+        path: '/signup',
+        component: Signup
+      },
+      {
+        name: 'ViewPatient',
+        path: '/viewpatient/:id',
+        component: ViewPatients,
+        props: route => ({ id: Number(route.params.id) })
+      },
+      {
+        path: '/homepage',
+        component: HomePage
+      },
+    ],
 })
 
 export default router
